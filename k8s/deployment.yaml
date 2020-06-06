@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellopython-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hellopython
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hellopython
+    spec:
+      containers:
+      - image: joeydebreuk/hellopython
+        imagePullPolicy: ""
+        name: hellopython-container
+        ports:
+        - containerPort: 7000
+        resources: {}
+        volumeMounts:
+        - mountPath: /code
+          name: hellopython-volume1
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: hellopython-volume1
+        persistentVolumeClaim:
+          claimName: hellopython-volume1
+status: {}
